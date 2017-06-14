@@ -35,34 +35,40 @@ namespace envire { namespace viz
 class Vizkit3dPluginInformation
 {
 public:
-  
-  /**Contains everything needed to invoke a certain update method */
-  struct UpdateMethod
-  {
+
+    /**Contains everything needed to invoke a certain update method */
+    struct UpdateMethod
+    {
     QMetaMethod method; //meta infos about the method
     QString libName; //name of the library (give to loadPlugin() to get an instance)
-  };
-  
-  Vizkit3dPluginInformation(vizkit3d::Vizkit3DWidget* mainWidget);
-  
-  using TypeToUpdateMapping = QMultiHash<QString, UpdateMethod>;
-  const TypeToUpdateMapping& getTypeToUpdateMethodMapping() const;
+    };
+
+    Vizkit3dPluginInformation(vizkit3d::Vizkit3DWidget* mainWidget);
+
+    using TypeToUpdateMapping = QMultiHash<QString, UpdateMethod>;
+    const TypeToUpdateMapping& getTypeToUpdateMethodMapping() const;
   
 private:
   
-  /**Populate ::typeToPlugin by loading all plugins and parsing their meta data */
-  void loadData();
-  
-  /** Add meta data of a specific plugin to ::typeToPlugin
-   * @param libName Name of the library that @p plugin comes from*/
-  void loadPluginData(const QObject* plugin, const QString& libName);
-  
-  /**Widget that is used to load the plugins*/
-  vizkit3d::Vizkit3DWidget* mainWidget;
-  /**Contains a mapping from parameter type name to update method.
-   * @note there might be more than one updateMethod per type.
-   *       */
-  TypeToUpdateMapping typeToPlugin;
+    /**Returns the connection type that should be used to invoke a blocking method on @p obj.
+    * I.e. if @p obj lives in the current thread it will return DirectConnection, otherwise
+    * BlockingQueuedConnection will be returned
+    * FIXME this method is copy pasted from envire_visualizer/src/Helpers.hpp*/
+    Qt::ConnectionType determineConnectionType(QObject* obj);
+    
+    /**Populate ::typeToPlugin by loading all plugins and parsing their meta data */
+    void loadData();
+
+    /** Add meta data of a specific plugin to ::typeToPlugin
+    * @param libName Name of the library that @p plugin comes from*/
+    void loadPluginData(const QObject* plugin, const QString& libName);
+
+    /**Widget that is used to load the plugins*/
+    vizkit3d::Vizkit3DWidget* mainWidget;
+    /**Contains a mapping from parameter type name to update method.
+    * @note there might be more than one updateMethod per type.
+    *       */
+    TypeToUpdateMapping typeToPlugin;
 };
 
 }}

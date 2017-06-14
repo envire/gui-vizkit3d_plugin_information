@@ -25,7 +25,6 @@
 //
 
 #include "Vizkit3dPluginInformation.hpp"
-#include "Helpers.hpp"
 #include <glog/logging.h>
 
 namespace envire { namespace viz
@@ -33,7 +32,8 @@ namespace envire { namespace viz
 Vizkit3dPluginInformation::Vizkit3dPluginInformation(vizkit3d::Vizkit3DWidget* mainWidget) :
     mainWidget(mainWidget)
 {
-  ASSERT_NOT_NULL(mainWidget);
+    if(mainWidget == nullptr)
+        throw std::runtime_error("mainWidget is null");
   loadData();
 }
 
@@ -41,7 +41,7 @@ void Vizkit3dPluginInformation::loadData()
 {
   QStringList* availablePlugins = mainWidget->getAvailablePlugins();
   
-  Qt::ConnectionType conType = Helpers::determineConnectionType(mainWidget);
+  Qt::ConnectionType conType = determineConnectionType(mainWidget);
   for(const QString& libName : *availablePlugins)
   {
     QObject* plugin = nullptr;
@@ -62,7 +62,8 @@ void Vizkit3dPluginInformation::loadPluginData(const QObject* plugin,
                                                const QString& libName)
 {
   const QMetaObject* metaObj = plugin->metaObject();
-  ASSERT_NOT_NULL(plugin);
+  if(plugin == nullptr)
+    throw std::runtime_error("plugin is null");
   
   for(int i = 0; i < metaObj->methodCount(); ++i)
   {
@@ -89,5 +90,19 @@ Vizkit3dPluginInformation::getTypeToUpdateMethodMapping() const
 {
   return typeToPlugin;
 }
+
+
+
+Qt::ConnectionType Vizkit3dPluginInformation::determineConnectionType(QObject* obj)
+{
+    //FIXME this method is copy pasted from envire_visualizer/src/Helpers.hpp
+ 
+    if(QThread::currentThread() == obj->thread())
+    {
+        return Qt::DirectConnection;
+    }
+    return Qt::BlockingQueuedConnection;
+}
+
   
 }}
