@@ -7,6 +7,6 @@ Name: vizkit3d_plugin_information
 Description: vizkit3d plugin information
 Requires: @PKGCONFIG_DEPS@
 Version: @PROJECT_VERSION@
-Libs: -L${libdir}
+Libs: -L${libdir} -lvizkit3d_plugin_information
 Cflags: -I${includedir} @QT_QTGUI_INCLUDE_DIR@
 
