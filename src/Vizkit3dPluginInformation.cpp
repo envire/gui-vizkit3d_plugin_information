@@ -105,4 +105,4 @@ Qt::ConnectionType Vizkit3dPluginInformation::determineConnectionType(QObject* o
 }
 
   
-}}
+}

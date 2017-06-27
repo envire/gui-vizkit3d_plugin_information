@@ -71,4 +71,4 @@ private:
     TypeToUpdateMapping typeToPlugin;
 };
 
-}}
+}
