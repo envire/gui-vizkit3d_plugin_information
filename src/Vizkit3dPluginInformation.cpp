@@ -27,7 +27,7 @@
 #include "Vizkit3dPluginInformation.hpp"
 #include <glog/logging.h>
 
-namespace envire { namespace viz
+namespace vizkit3d
 {
 Vizkit3dPluginInformation::Vizkit3dPluginInformation(vizkit3d::Vizkit3DWidget* mainWidget) :
     mainWidget(mainWidget)

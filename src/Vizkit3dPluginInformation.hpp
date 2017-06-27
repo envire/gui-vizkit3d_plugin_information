@@ -28,7 +28,7 @@
 #include <vizkit3d/Vizkit3DWidget.hpp>
 #include <QMultiHash>
 
-namespace envire { namespace viz
+namespace vizkit3d
 {
 
 /**Contains information about updateData methods of all available Vizkit3D plugins*/
