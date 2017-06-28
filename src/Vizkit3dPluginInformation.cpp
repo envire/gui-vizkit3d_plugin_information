@@ -25,7 +25,7 @@
 //
 
 #include "Vizkit3dPluginInformation.hpp"
-#include <glog/logging.h>
+#include <base-logging/Logging.hpp>
 
 namespace vizkit3d
 {
@@ -78,7 +78,7 @@ void Vizkit3dPluginInformation::loadPluginData(const QObject* plugin,
       if(paramTypes.size() == 1 && typeName.isEmpty()) //isEmpty means "void"
       { 
         typeToPlugin.insert(QString(paramTypes.at(0)), {method, libName});
-        LOG(INFO) << "found method: " << method.signature() << 
+        LOG_INFO_S << "found method: " << method.signature() << 
                      " for type: " << QString(paramTypes[0]).toStdString();
       }
     }
