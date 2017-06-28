@@ -44,9 +44,13 @@ public:
     };
 
     Vizkit3dPluginInformation(vizkit3d::Vizkit3DWidget* mainWidget);
+    ~Vizkit3dPluginInformation();
 
     using TypeToUpdateMapping = QMultiHash<QString, UpdateMethod>;
     const TypeToUpdateMapping& getTypeToUpdateMethodMapping() const;
+    
+    using TypeToPluginMapping = QMultiHash<QString, QObject*>;
+    const TypeToPluginMapping& getTypeToPluginMapping() const;
   
 private:
   
@@ -61,7 +65,7 @@ private:
 
     /** Add meta data of a specific plugin to ::typeToPlugin
     * @param libName Name of the library that @p plugin comes from*/
-    void loadPluginData(const QObject* plugin, const QString& libName);
+    void loadPluginData(QObject* plugin, const QString& libName);
 
     /**Widget that is used to load the plugins*/
     vizkit3d::Vizkit3DWidget* mainWidget;
@@ -69,6 +73,10 @@ private:
     * @note there might be more than one updateMethod per type.
     *       */
     TypeToUpdateMapping typeToPlugin;
+    
+    /**Contains a mapping from parameter type name to vizkit 3d plugin object */
+    TypeToPluginMapping typeToObject;
+    
 };
 
 }
