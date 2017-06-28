@@ -44,13 +44,13 @@ public:
     };
 
     Vizkit3dPluginInformation(vizkit3d::Vizkit3DWidget* mainWidget);
+    ~Vizkit3dPluginInformation();
 
     using TypeToUpdateMapping = QMultiHash<QString, UpdateMethod>;
     const TypeToUpdateMapping& getTypeToUpdateMethodMapping() const;
     
-    using TypeToLibNameMapping = QMultiHash<QString, QString>;
-    /** @note Do ***not*** delete the Qbject, it will be deleted when the pluginInformation  */
-    const TypeToLibNameMapping& getTypeToLibNameMapping() const;
+    using TypeToPluginMapping = QMultiHash<QString, QObject*>;
+    const TypeToPluginMapping& getTypeToPluginMapping() const;
   
 private:
   
@@ -75,7 +75,7 @@ private:
     TypeToUpdateMapping typeToPlugin;
     
     /**Contains a mapping from parameter type name to vizkit 3d plugin object */
-    TypeToLibNameMapping typeToLib;
+    TypeToPluginMapping typeToObject;
     
 };
 

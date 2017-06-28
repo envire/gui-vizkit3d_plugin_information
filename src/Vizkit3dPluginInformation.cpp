@@ -51,7 +51,7 @@ void Vizkit3dPluginInformation::loadData()
     if(nullptr != plugin)
     {
       loadPluginData(plugin, libName);
-      delete plugin;
+      //NOTE plugin is stored and deleted in dtor
     }
   }
   
@@ -78,7 +78,7 @@ void Vizkit3dPluginInformation::loadPluginData(QObject* plugin,
       if(paramTypes.size() == 1 && typeName.isEmpty()) //isEmpty means "void"
       { 
         typeToPlugin.insert(QString(paramTypes.at(0)), {method, libName});
-        typeToLib.insert(QString(paramTypes.at(0)), libName);
+        typeToObject.insert(QString(paramTypes.at(0)), plugin);
         LOG_INFO_S << "found method: " << method.signature() << 
                      " for type: " << QString(paramTypes[0]).toStdString();
       }
@@ -86,11 +86,24 @@ void Vizkit3dPluginInformation::loadPluginData(QObject* plugin,
   }
 }
 
-const Vizkit3dPluginInformation::TypeToLibNameMapping& Vizkit3dPluginInformation::getTypeToLibNameMapping() const
+const Vizkit3dPluginInformation::TypeToPluginMapping& Vizkit3dPluginInformation::getTypeToPluginMapping() const
 {
-    return typeToLib;
+    return typeToObject;
 }
 
+
+Vizkit3dPluginInformation::~Vizkit3dPluginInformation()
+{
+    for(int i = 0; i <typeToObject.keys().size(); ++i)
+    {
+        const QString& key = typeToObject.keys().at(i);
+        QList<QObject*> values = typeToObject.values(key);
+        for (int i = 0; i < values.size(); ++i)
+        {
+            delete values.at(i);
+        }
+    }
+}
 
 
 const QMultiHash<QString, Vizkit3dPluginInformation::UpdateMethod>&
