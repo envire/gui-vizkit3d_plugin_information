@@ -28,4 +28,5 @@
   </description>
   <author>Arne Böckmann (arne.boeckmann@dfki.de)</author>
   <depend package="gui/vizkit3d" />
+  <depend package="base/types"/>
 </package>
