@@ -68,7 +68,11 @@ void Vizkit3dPluginInformation::loadPluginData(const QObject* plugin,
   for(int i = 0; i < metaObj->methodCount(); ++i)
   {
     const QMetaMethod method = metaObj->method(i);
-    QString signature = QString::fromLatin1(method.methodSignature());
+#if QT_VERSION < 0x050000
+    QString signature = QString::fromLocal8Bit(method.signature());
+#else
+    QString signature = QString::fromLocal8Bit(method.methodSignature());
+#endif
     QStringList elements = signature.split("(");     
     const QString methodName = elements[0];
     if(methodName.contains("updateData"))
@@ -78,7 +82,12 @@ void Vizkit3dPluginInformation::loadPluginData(const QObject* plugin,
       if(paramTypes.size() == 1 && typeName.isEmpty()) //isEmpty means "void"
       { 
         typeToPlugin.insert(QString(paramTypes.at(0)), {method, libName});
-        LOG_INFO_S << "found method: " << QString::fromLatin1(method.methodSignature()).toStdString() << 
+        LOG_INFO_S << "found method: " <<
+#if QT_VERSION < 0x050000
+                     method.signature() <<
+#else
+                     QString::fromLocal8Bit(method.methodSignature()).toStdString() <<
+#endif
                      " for type: " << QString(paramTypes[0]).toStdString();
       }
     }
