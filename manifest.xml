@@ -29,4 +29,5 @@
   <author>Arne Böckmann (arne.boeckmann@dfki.de)</author>
   <depend package="gui/vizkit3d" />
   <depend package="base/types"/>
+  <depend package="qt5" />
 </package>
