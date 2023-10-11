@@ -79,16 +79,14 @@ void Vizkit3dPluginInformation::loadPluginData(const QObject* plugin,
     {
       const QString typeName = method.typeName();
       QList<QByteArray> paramTypes = method.parameterTypes();
-      if(paramTypes.size() == 1 && typeName.isEmpty()) //isEmpty means "void"
+#if QT_VERSION < 0x050000
+      if(paramTypes.size() == 1 && typeName.isEmpty()) // isEmpty means "void"
+#else
+      if(paramTypes.size() == 1 && typeName == "void") //in QT5 it says "void"
+#endif
       { 
         typeToPlugin.insert(QString(paramTypes.at(0)), {method, libName});
-        LOG_INFO_S << "found method: " <<
-#if QT_VERSION < 0x050000
-                     method.signature() <<
-#else
-                     QString::fromLocal8Bit(method.methodSignature()).toStdString() <<
-#endif
-                     " for type: " << QString(paramTypes[0]).toStdString();
+        LOG_INFO_S << "found method: " << signature.toStdString() << " for type: " << QString(paramTypes[0]).toStdString();
       }
     }
   }
