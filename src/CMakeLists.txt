@@ -1,7 +1,7 @@
 add_definitions(-DBASE_LOG_NAMESPACE=${PROJECT_NAME})
 
-rock_find_qt4()
-rock_find_qt5()
+rock_find_qt4(OPTIONAL)
+rock_find_qt5(OPTIONAL)
 
 if(ROCK_QT_VERSION_4)
     rock_library(vizkit3d_plugin_information
