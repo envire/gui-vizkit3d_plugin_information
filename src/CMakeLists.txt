@@ -8,6 +8,7 @@ include(RockQt)
 rock_qt_library(
                 TARGETPREFIX vizkit3d_plugin_information
                 QT4_SUFFIX ""
+                MISSINGQTDEPS_NOBUILD
                 HEADERS Vizkit3dPluginInformation.hpp
                 SOURCES Vizkit3dPluginInformation.cpp
                 DEPS_PKGCONFIG base-lib
